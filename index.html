@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Blog</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="app">
+      <div class="container">
+        <h1>Create Post</h1>
+
+        <!-- Main create post form -->
+        <form @submit.prevent="savePost" v-if="!showEditForm">
+          <label for="title">Title:</label><br />
+          <input
+            type="text"
+            id="title"
+            v-model="newPost.title"
+            required
+          /><br /><br />
+
+          <label for="description">Description:</label><br />
+          <textarea
+            id="description"
+            v-model="newPost.description"
+            rows="4"
+            required
+          ></textarea
+          ><br /><br />
+
+          <label for="time">Time:</label><br />
+          <input
+            type="text"
+            id="time"
+            v-model="newPost.time"
+            readonly
+          /><br /><br />
+
+          <button type="button" @click="startTimer()">Start</button>
+          <button type="button" @click="stopTimer()">Stop</button>
+          <button type="submit">Save</button>
+        </form>
+
+        <!-- Edit post form overlay -->
+        <div class="overlay" v-if="showEditForm">
+          <form @submit.prevent="updatePost">
+            <h2>Editing Posts</h2>
+            <label for="edit-title">Title:</label><br />
+            <input
+              type="text"
+              id="edit-title"
+              v-model="editedPost.title"
+              required
+            /><br /><br />
+
+            <label for="edit-description">Description:</label><br />
+            <textarea
+              id="edit-description"
+              v-model="editedPost.description"
+              rows="4"
+              required
+            ></textarea
+            ><br /><br />
+
+            <label for="edit-time">Time:</label><br />
+            <input
+              type="text"
+              id="edit-time"
+              v-model="editedPost.time"
+              readonly
+            /><br /><br />
+
+            <button type="button" @click="continue_Timer()">Continue</button>
+            <button type="button" @click="stopTimer()">Stop</button>
+            <button type="submit">Save Changes</button>
+            <button type="button" @click="cancelEdit">Cancel</button>
+          </form>
+        </div>
+
+        <!-- Post list -->
+        <ul>
+          <li v-for="post in posts" :key="post.id">
+            <div>
+              <h3>Title : {{ post.title }}</h3>
+              <p>Description : {{ post.description }}</p>
+              <small>Time : {{ post.time }}</small>
+            </div>
+            <button @click="deletePost(post.id)">Delete</button>
+            <button @click="showEditForm = true; editPost(post)">Edit</button>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Include Vue.js library -->
+    <script src="vue.js"></script>
+    <!-- Include your script.js file -->
+    <script src="script.js"></script>
+  </body>
+</html>
